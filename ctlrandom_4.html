@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Changeling: The Lost - Random Kith Generator</title>
+<style>
+    body {
+        font-family: Goudy Old Style, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+        background-image: url('CtLTexture.png'); /* Adjust the path as necessary */
+        background-size: cover;
+
+    }
+    h2.title, h3, #output h4 {
+        font-family: 'Rackham', Goudy Old Style, sans-serif; /* Rackham or fallback */
+    }
+    #output {
+        font-size: 24px;
+        margin-top: 20px;
+    }
+    .description {
+        margin-top: 10px;
+    }
+    button {
+	font-family: Rackham;
+        font-size: 20px;
+	color: #fff;
+	background-color: #006935;
+        padding: 10px 20px;
+    }
+    .checkboxes {
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+
+<h2 class="title">Changeling: The Lost - Random Kith Generator</h2>
+
+<button onclick="randomize()">Randomize</button>
+
+<div class="checkboxes">
+    <label><input type="checkbox" id="includeCourt"> Include Court</label>
+    <label><input type="checkbox" id="includeKithAndKin" checked> Include Kith and Kin</label>
+    <label><input type="checkbox" id="includeDarkEras" checked> Include Dark Eras</label>
+    <label><input type="checkbox" id="includeNeedleAndThread"> Include Needle and Thread</label>
+</div>
+
+<div id="output"></div>
+
+<script>
+// Seemings and their descriptions
+const seemings = {
+    "Beast": "Grims and Savages who roamed Faerie under the heart and skin of an animal.",
+    "Darkling": "Wisps and Mountebanks who knew safety in Faerie by disappearing into darkness.",
+    "Elemental": "Sprites and Torrents infused with and molded by the materials and environment of Faerie.",
+    "Fairest": "Sovereigns and Muses touched by the heights of Faerie's glory, beauty, and cruelty.",
+    "Ogre": "Bruisers and Gargoyles who endure the marks of blunt brutality.",
+    "Wizened": "Hatters and Domovye worn down by the crafts and labors of their Durance."
+};
+
+// Kiths and their details
+const kiths = [
+    {"name": "Absinthial", "description": "Green fairies who distill the dream-brews of Arcadia.", "source": "Kith 88"},
+    {"name": "Airtouched", "description": "Changelings disconnected from the rest of the world who spent their time in the skies of Arcadia.", "source": "Kith 107"},
+    {"name": "Antiquarian", "description": "Secret holders and living repositories of knowledge.", "source": "DE2 69"},
+    {"name": "Apoptosome", "description": "Lost left to constantly fight and die in isolation.", "source": "Kith 116"},
+    {"name": "Artist", "description": "Creators whose bodies have become one with their medium.", "source": "CTL 2e 51"},
+    {"name": "Asclepian", "description": "Healers that use makeshift parts.", "source": "Kith 103"},
+    {"name": "Bearskin", "description": "Soldiers of Arcadia dedicated to causes important to them.", "source": "Kith 111"},
+    {"name": "Beastcaller", "description": "Lost with a connection to goblin beasts.", "source": "Kith 112"},
+    {"name": "Becquerel", "description": "Radioactive Lost.", "source": "Kith 117"},
+    {"name": "Blightbent", "description": "Lost permanently tainted by poisons and pollution.", "source": "Kith 117"},
+    {"name": "Bricoleur", "description": "Clever manipulators of symbolism and connections.", "source": "Kith 98"},
+    {"name": "Bridgeguard", "description": "Changelings that fight against impossible odds and excel when outnumbered.", "source": "Kith 104"},
+    {"name": "Bright One", "description": "Glowing and radiant, lit by the inner flame of their channeled passion.", "source": "CTL 2e 52"},
+    {"name": "Chalomot", "description": "The Gentry's scouts on the Dreaming Roads, experts at breaking into Bastions.", "source": "Kith 107"},
+    {"name": "Chatelaine", "description": "Products of endless drilling in protocol and domestic service.", "source": "CTL 2e 52"},
+    {"name": "Chevalier", "description": "Changelings with a connection to their steed, be it animal or vehicle.", "source": "Kith 107"},
+    {"name": "Chimera", "description": "Animalistic changelings stitched together from pieces of a multitude of Arcadian beasts.", "source": "CTL JS 47 / DE2 69"},
+    {"name": "Cleverquick", "description": "Tricksters whose Durance honed their skill at wits and intrigue.", "source": "DE2 368"},
+    {"name": "Climacteric", "description": "Weather-clocks and forecasters who captured time with the elements.", "source": "Kith 88"},
+    {"name": "Cloakskin", "description": "Lonely Lost with an invisible Mask.", "source": "Kith 98"},
+    {"name": "Concubus", "description": "Nightly companions and dreamweavers tending the minds of the Others.", "source": "Kith 89"},
+    {"name": "Cyclopean", "description": "Lost made into magnificent giants or architectural features, often living with a disability.", "source": "Kith 112"},
+    {"name": "Delver", "description": "Miners of precious things.", "source": "Kith 93"},
+    {"name": "Doppelganger", "description": "Thieves of familiar traits.", "source": "Kith 99"},
+    {"name": "Draconic", "description": "Changelings who evolved into grandiose guardian beasts.", "source": "Kith 90"},
+    {"name": "Dryad", "description": "Those who spent their Durance as creatures of gardens and greenery.", "source": "DE2 70"},
+    {"name": "Enkrateia", "description": "The voice of reason to their Keepers, the advisors, and mediators of Arcadia.", "source": "Kith 118"},
+    {"name": "Farwalker", "description": "Those that patrol the outdoors, at home in the wilderness.", "source": "Kith 108"},
+    {"name": "Flowering", "description": "These Lost lived amid Arcadian flora and adopted their passive allure.", "source": "Kith 90"},
+    {"name": "Flickerflash", "description": "Lost who gotta go fast.", "source": "Kith 110"},
+    {"name": "Ghostheart", "description": "Psychopomps and gravediggers sent to tend the dead.", "source": "Kith 119"},
+    {"name": "Glimmerwisp", "description": "Fogs and mists of Faerie, concealing shameful and monstrous actions", "source": "Kith 94"},
+    {"name": "Gravewight", "description": "Lost with a connection to death.", "source": "Kith 91"},
+    {"name": "Gremlin", "description": "Perfectionists that impulsively destroy flawed creations", "source": "Kith 94"},
+    {"name": "Gristlegrinder", "description": "Monsters consumed by hunger and haunted by the taste of flesh.", "source": "CTL 2e 53"},
+    {"name": "Helldiver", "description": "Spies and explorers, not free until they break the silver cord anchoring them to Faerie.", "source": "CTL 2e 53"},
+    {"name": "Hunterheart", "description": "Hunters escaped from a Durance of bloody predation.", "source": "CTL 2e 54"},
+    {"name": "Leechfinger", "description": "Secret parasites who drain the life force from others.", "source": "CTL 2e 55"},
+    {"name": "Lethipomp", "description": "Emotionless collectors of painful memories.", "source": "Kith 99"},
+    {"name": "Levinquick", "description": "Restless scouts and couriers of digital landscapes.", "source": "Kith 110"},
+    {"name": "Librorum", "description": "Defenders of libraries and knowledge.", "source": "Kith 104"},
+    {"name": "Liminal", "description": "Defenders of thresholds.", "source": "Kith 105"},
+    {"name": "Lullescent", "description": "Silent eavesdroppers with excellent hearing.", "source": "Kith 100"},
+    {"name": "Manikin", "description": "Canvas for the Gentry's art.", "source": "Kith 95"},
+    {"name": "Mirrorskin", "description": "Those whose Durance taught them to empty themselves of their nature, becoming anybody and nobody.", "source": "CTL 2e 55"},
+    {"name": "Moonborn", "description": "Lost roused to wild and restless passions for their Keepers' entertainment.", "source": "Kith 92"},
+    {"name": "Muse", "description": "Changelings whose influence over others manifests through their beauty.", "source": "DE2 70"},
+    {"name": "Nightsinger", "description": "Sirens and vocalists whose songs once moved the earth of Faerie.", "source": "CTL 2e 56"},
+    {"name": "Notary", "description": "Humans used as documents to write the oaths of the Gentry upon, with perfect knowledge of all the oath's clauses.", "source": "CTL 2e 57"},
+    {"name": "Nymph", "description": "Changelings who dwelled in Faerie's oceans and waterways.", "source": "DE2 70"},
+    {"name": "Oculus", "description": "Diplomats and bargainers skilled at making others see their perspective.", "source": "Kith 95"},
+    {"name": "Playmate", "description": "Friends, pets and toys who lived by love and trust even in Faerie.", "source": "CTL 2e 57"},
+    {"name": "Plaguesmith", "description": "Lost fashioned into bioweapons, capable of spreading diseases.", "source": "Kith 113"},
+    {"name": "Polychromatic", "description": "Colorful and flashy, with a talent for stirring and soothing emotions", "source": "Kith 96"},
+    {"name": "Razorhand", "description": "Lost with sharp objects replacing or attaching their hands.", "source": "Kith 114"},
+    {"name": "Reborn", "description": "Changelings who were repeatedly killed and brought back to life.", "source": "Kith 105"},
+    {"name": "Riddleseeker", "description": "Masters of riddles.", "source": "Kith 100"},
+    {"name": "Sandharrowed", "description": "Lost who survived the deserts of Arcadia.", "source": "Kith 115"},
+    {"name": "Shadowsoul", "description": "Lost with a connection to the stars and the nighttime.", "source": "Kith 119"},
+    {"name": "Sideromancer", "description": "Diviners of the Wyrd.", "source": "Kith 101"},
+    {"name": "Snowskin", "description": "Those who escaped the grip of Faerie by smothering the warmth within and freezing solid.", "source": "CTL 2e 58"},
+    {"name": "Spiegelbild", "description": "Advisors residing in mirrors.", "source": "Kith 102"},
+    {"name": "Stoneflesh", "description": "Durable Changelings with hardened resolve and hardened skin.", "source": "Kith 106"},
+    {"name": "Swarmflight", "description": "Lost capable of dissolving into a swarm of animals, objects, or some other phenomenon.", "source": "Kith 110"},
+    {"name": "Swimmerskin", "description": "Mermaids and their kin.", "source": "Kith 111"},
+    {"name": "Telluric", "description": "Celestial bodies and stars above Arcadia.", "source": "Kith 120"},
+    {"name": "Uttervoice", "description": "Changelings whose frustrations have sharpened their voice into a deadly blade.", "source": "Kith 92"},
+    {"name": "Valkyrie", "description": "Lost forced to choose who lives and dies on the battlefields of Arcadia.", "source": "Kith 115"},
+    {"name": "Veneficus", "description": "Herbalists and cooks of faerie.", "source": "Kith 97"},
+    {"name": "Venombite", "description": "Lost turned venomous by their petty resentments.", "source": "Kith 116"},
+    {"name": "Whisperwisp", "description": "Spies and saboteurs.", "source": "Kith 120"},
+    {"name": "Wisewitch", "description": "Changelings permanently touched by a Keeper's Title.", "source": "Kith 106"},
+    {"name": "Witchtooth", "description": "Reclusive hermits who know the power of the land.", "source": "Kith 97"}
+
+];
+
+// Sample Needles and Threads
+const needles = ["Bon Vivant", "Commander", "Composer", "Counselor", "Daredevil", "Dynamo", "Protector", "Provider", "Scholar", "Storyteller", "Teacher", "Traditionalist", "Visionary"];
+const threads = ["Acceptance", "Anger", "Family", "Friendship", "Hate", "Honor", "Joy", "Love", "Memory", "Revenge"];
+
+function randomize() {
+    const includeCourt = document.getElementById('includeCourt').checked;
+    const includeKithAndKin = document.getElementById('includeKithAndKin').checked;
+    const includeDarkEras = document.getElementById('includeDarkEras').checked;
+    const includeNeedleAndThread = document.getElementById('includeNeedleAndThread').checked;
+
+    // Filter kiths based on checkboxes
+    let filteredKiths = kiths.filter(kith => {
+        if (!includeKithAndKin && kith.source.includes("Kith")) {
+            return false;
+        }
+        if (!includeDarkEras && kith.source.includes("DE2")) {
+            return false;
+        }
+        return true;
+    });
+
+    // Select random seeming, kith, needle, and thread
+    const seemingKeys = Object.keys(seemings);
+    const randomSeeming = seemingKeys[Math.floor(Math.random() * seemingKeys.length)];
+    const randomKith = filteredKiths[Math.floor(Math.random() * filteredKiths.length)];
+    const randomNeedle = needles[Math.floor(Math.random() * needles.length)];
+    const randomThread = threads[Math.floor(Math.random() * threads.length)];
+
+    // Prepare output with or without season
+    let outputSeeming = randomSeeming;
+    if (includeCourt) {
+        const seasons = ["Winter", "Spring", "Summer", "Autumn"];
+        const randomSeason = seasons[Math.floor(Math.random() * seasons.length)];
+        outputSeeming = randomSeason + ' ' + randomSeeming;
+    }
+
+    // Update the output
+    let output = '<h3>' + outputSeeming + ' ' + randomKith.name + '</h3>';
+
+
+    // Add Needle and Thread if checked
+    if (includeNeedleAndThread) {
+        output += '<b>' + randomNeedle + ' / ' + randomThread + '</b>';
+    }
+
+    output += '<div class="description"><b>' + randomSeeming + '</b>: ' + seemings[randomSeeming] + '</div>';
+    output += '<div class="description"><b>' + randomKith.name + '</b>: ' + randomKith.description + '</div>';
+    output += '<div class="description"><i>Kith source: ' + randomKith.source + '</i></div>';
+
+    document.getElementById('output').innerHTML = output;
+}
+
+</script>
+
+</body>
+</html>
