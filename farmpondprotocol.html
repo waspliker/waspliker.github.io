@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>9x9 Grid with Interactive Elements</title>
+<style>
+  body { font-family: sans-serif; }
+  table { border-collapse: collapse; }
+  td { text-align: center; vertical-align: middle; }
+  .corner-cell-right { width: 1cm; height: 1cm; background-color: #fcedda; border-right: 1px solid black; border-bottom: 1px solid black; border-top: 1px solid black; border-left: none; }
+  .corner-cell-left { width: 1cm; height: 1cm; background-color: #fcedda; border-right: none; border-bottom: 1px solid black; border-top: 1px solid black; border-left: 1px solid black; }
+  .first-last-row-inner-cell { width: 2cm; height: 1cm; background-color: #fcedda; border-top: 1px solid black; border-bottom: 1px solid black; }
+  .first-column-cell, .last-column-cell { width: 1cm; height: 2cm; background-color: #fcedda; border-left: 1px solid black; border-right: 1px solid black; border-top: none; border-bottom: none; }
+  .cell-4x4 { width: 2cm; height: 2cm; background-image: url('images/grid_background_unprocessed.jpg'); border: 1px solid black; }
+  .bold { font-weight: bold; }
+  .non-selectable { pointer-events: none; }
+</style>
+</head>
+<body>
+
+<h1>Farm Pond Sampling Protocol</h1>
+Instructions:
+<ul>
+    <li>Generate a unique random number between 1 and 49 using the <b>Generate</b> button, below.</li>
+    <li>Find the corresponding cell on the sieve and place the contents in the narrow white tray.</li>
+    <li>Sort through the tray, counting the total number and identifying them to family on the data sheet. Stop when you have counted 200 specimens.</li>
+    <li>If the total specimen count is less than 200, click "Generate" again and repeat the process.</li>
+</ul>
+
+<table>
+  <!-- First Row -->
+  <tr>
+    <td class="corner-cell-left non-selectable"></td>
+    <td class="first-last-row-inner-cell bold non-selectable">A</td>
+    <td class="first-last-row-inner-cell bold non-selectable">B</td>
+    <td class="first-last-row-inner-cell bold non-selectable">C</td>
+    <td class="first-last-row-inner-cell bold non-selectable">D</td>
+    <td class="first-last-row-inner-cell bold non-selectable">E</td>
+    <td class="first-last-row-inner-cell bold non-selectable">F</td>
+    <td class="first-last-row-inner-cell bold non-selectable">G</td>
+    <td class="corner-cell-right non-selectable"></td>
+  </tr>
+
+  <!-- Second Row -->
+  <tr>
+    <td class="first-column-cell non-selectable bold bold">1</td>
+    <td class="cell-4x4">1</td>
+    <td class="cell-4x4">2</td>
+    <td class="cell-4x4">3</td>
+    <td class="cell-4x4">4</td>
+    <td class="cell-4x4">5</td>
+    <td class="cell-4x4">6</td>
+    <td class="cell-4x4">7</td>
+    <td class="last-column-cell non-selectable bold">7</td>
+  </tr>
+
+  <!-- Third through Seventh Rows -->
+  <!-- Row 3 Example -->
+  <tr>
+    <td class="first-column-cell non-selectable bold bold">2</td>
+    <td class="cell-4x4">8</td>
+    <td class="cell-4x4">9</td>
+    <td class="cell-4x4">10</td>
+    <td class="cell-4x4">11</td>
+    <td class="cell-4x4">12</td>
+    <td class="cell-4x4">13</td>
+    <td class="cell-4x4">14</td>
+    <td class="last-column-cell non-selectable bold">14</td>
+  </tr>
+  <!-- Add rows 4 through 7 following the same pattern -->
+
+
+  <!-- Fourth Row -->
+  <tr>
+    <td class="first-column-cell non-selectable bold bold">3</td>
+    <td class="cell-4x4">15</td>
+    <td class="cell-4x4">16</td>
+    <td class="cell-4x4">17</td>
+    <td class="cell-4x4">18</td>
+    <td class="cell-4x4">19</td>
+    <td class="cell-4x4">20</td>
+    <td class="cell-4x4">21</td>
+    <td class="first-column-cell non-selectable bold bold">21</td>
+  </tr>
+
+  <!-- Fifth Row -->
+  <tr>
+    <td class="first-column-cell non-selectable bold">4</td>
+    <td class="cell-4x4">22</td>
+    <td class="cell-4x4">23</td>
+    <td class="cell-4x4">24</td>
+    <td class="cell-4x4">25</td>
+    <td class="cell-4x4">26</td>
+    <td class="cell-4x4">27</td>
+    <td class="cell-4x4">28</td>
+    <td class="first-column-cell non-selectable bold">28</td>
+  </tr>
+
+  <!-- Sixth Row -->
+  <tr>
+    <td class="first-column-cell non-selectable bold">5</td>
+    <td class="cell-4x4">29</td>
+    <td class="cell-4x4">30</td>
+    <td class="cell-4x4">31</td>
+    <td class="cell-4x4">32</td>
+    <td class="cell-4x4">33</td>
+    <td class="cell-4x4">34</td>
+    <td class="cell-4x4">35</td>
+    <td class="first-column-cell non-selectable bold">35</td>
+  </tr>
+
+  <!-- Seventh Row -->
+  <tr>
+    <td class="first-column-cell non-selectable bold">6</td>
+    <td class="cell-4x4">36</td>
+    <td class="cell-4x4">37</td>
+    <td class="cell-4x4">38</td>
+    <td class="cell-4x4">39</td>
+    <td class="cell-4x4">40</td>
+    <td class="cell-4x4">41</td>
+    <td class="cell-4x4">42</td>
+    <td class="first-column-cell non-selectable bold">42</td>
+  </tr> <tr>
+    <td class="first-column-cell non-selectable bold bold">7</td>
+    <td class="cell-4x4">43</td>
+    <td class="cell-4x4">44</td>
+    <td class="cell-4x4">45</td>
+    <td class="cell-4x4">46</td>
+    <td class="cell-4x4">47</td>
+    <td class="cell-4x4">48</td>
+    <td class="cell-4x4">49</td>
+    <td class="last-column-cell non-selectable bold">49</td>
+  </tr>
+
+  <!-- Ninth Row -->
+  <tr>
+    <td class="corner-cell-left non-selectable"></td>
+    <td class="first-last-row-inner-cell non-selectable"></td>
+    <td class="first-last-row-inner-cell non-selectable"></td>
+    <td class="first-last-row-inner-cell non-selectable"></td>
+    <td class="first-last-row-inner-cell non-selectable"></td>
+    <td class="first-last-row-inner-cell non-selectable"></td>
+    <td class="first-last-row-inner-cell non-selectable"></td>
+    <td class="first-last-row-inner-cell non-selectable"></td>
+    <td class="corner-cell-right non-selectable"></td>
+  </tr>
+</table>
+<br/>
+<button id="generate">Generate</button>
+<button id="reset">Reset</button>
+<div id="selectedNumber"></div>
+<div id="previousNumbers">Previously selected cells: </div>
+<br/>
+<br/>
+<button id="manualInput" style="margin-top: 10px; font-size: 0.8rem;">Manual Input</button>
+
+
+
+
+<script>
+let selectedCells = [];
+
+document.getElementById('generate').addEventListener('click', function() {
+  const selectableCells = Array.from(document.querySelectorAll('.cell-4x4:not(.non-selectable)'));
+  const unselectedCells = selectableCells.filter(cell => !cell.classList.contains('selected'));
+
+  if (unselectedCells.length > 0) {
+    const randomIndex = Math.floor(Math.random() * unselectedCells.length);
+    const cell = unselectedCells[randomIndex];
+    
+    // Reset backgrounds for previously selected cells
+    selectedCells.forEach(c => {
+      c.style.backgroundColor = ''; // Remove green background
+      c.style.backgroundImage = "url('images/grid_background.jpg')"; // Set to grid background
+    });
+
+    // Highlight the new selected cell
+    cell.style.backgroundColor = '#00FF00'; // Set new cell to green
+    cell.style.backgroundImage = 'none'; // Remove background image for visibility
+    document.getElementById('selectedNumber').innerHTML = `<h1>${cell.textContent}</h2>`;
+    document.getElementById('previousNumbers').innerHTML += `${cell.textContent}, `;
+
+    selectedCells.push(cell); // Add new cell to the list of selected cells
+    cell.classList.add('selected'); // Mark cell as selected
+  }
+});
+
+document.getElementById('reset').addEventListener('click', function() {
+  selectedCells.forEach(cell => {
+    cell.style.backgroundColor = ''; // Remove green background
+    cell.style.backgroundImage = "url('images/grid_background_unprocessed.jpg')"; // Reset to original background
+    cell.classList.remove('selected'); // Remove 'selected' class
+  });
+  selectedCells = []; // Clear the list of selected cells
+  document.getElementById('selectedNumber').innerHTML = '';
+  document.getElementById('previousNumbers').innerHTML = 'Previously selected cells:';
+});
+
+document.getElementById('manualInput').addEventListener('click', function() {
+  const manualNumber = prompt("Enter a number (1-49):");
+  if (manualNumber >= 1 && manualNumber <= 49) {
+    const cell = Array.from(document.querySelectorAll('.cell-4x4')).find(c => c.textContent === manualNumber);
+    if (cell && !cell.classList.contains('selected')) {
+      cell.style.backgroundColor = ''; // Set cell to green
+      cell.style.backgroundImage = "url('images/grid_background.jpg')"; // Remove background image for visibility
+      document.getElementById('previousNumbers').innerHTML += `${manualNumber}, `;
+      cell.classList.add('selected'); // Mark cell as selected
+
+      // In case you need to update selectedCells array as well
+      if (typeof selectedCells !== 'undefined') {
+        selectedCells.push(cell);
+      }
+    } else if (cell && cell.classList.contains('selected')) {
+      alert("This number has already been selected.");
+    } else {
+      alert("Number not found in grid.");
+    }
+  } else {
+    alert("Number out of range. Please enter a number between 1 and 49.");
+  }
+});
+</script>
+
+</body>
+</html>
